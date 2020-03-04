@@ -10,51 +10,79 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.webapp.auth.services.JwtAuthenticationEntryPoint;
+import com.webapp.auth.services.JwtRequestFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Qualifier("userDetailsServiceImpl")
-    @Autowired
-    private UserDetailsService userDetailsService;
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Qualifier("userDetailsServiceImpl")
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .antMatchers("/registration").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-            .logout()
-                .permitAll();
-    }
+	@Autowired
+	private JwtRequestFilter jwtRequestFilter;
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-    	web
-    		.ignoring()
-    		.antMatchers("/resources/**")
-    		.antMatchers("/publics/**");
-    }
-    
-    @Bean
-    public AuthenticationManager customAuthenticationManager() throws Exception {
-        return authenticationManager();
-    }
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+////        http
+////            .authorizeRequests()
+////                .antMatchers("/registration").permitAll()
+////                .anyRequest().authenticated()
+////                .and()
+////            .formLogin()
+////                .loginPage("/login")
+////                .permitAll()
+////                .and()
+////            .logout()
+////                .permitAll();
+//		http.authorizeRequests().antMatchers("/registration").permitAll().antMatchers("/login").permitAll().anyRequest()
+//				.authenticated().and().formLogin().disable().logout().permitAll();
+//	}
+
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+// We don't need CSRF for this example
+		httpSecurity.csrf().disable()
+// dont authenticate this particular request
+				.authorizeRequests().antMatchers("/authenticate").permitAll().antMatchers("/registration").permitAll()
+				.antMatchers("/login").permitAll().
+// all other requests need to be authenticated
+				anyRequest().authenticated().and().
+// make sure we use stateless session; session won't be used to
+// store user's state.
+				//exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+				//.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+// Add a filter to validate the tokens with every request
+	addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	}
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/resources/**").antMatchers("/publics/**");
+	}
+
+	@Bean
+	public AuthenticationManager customAuthenticationManager() throws Exception {
+		return authenticationManager();
+	}
+
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+	}
 }

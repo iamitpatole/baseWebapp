@@ -47,29 +47,7 @@
 				</div>
 				<div class="login-form">
 
-
-					<%-- <form method="POST" action="${contextPath}/login"
-						class="form-signin">
-						<h2 class="form-heading">Log in</h2>
-
-						<div class="form-group ${error != null ? 'has-error' : ''}">
-							<span>${message}</span> <input name="username" type="text"
-								class="form-control" placeholder="Username" autofocus="true" />
-							<input name="password" type="password" class="form-control"
-								placeholder="Password" /> <span>${error}</span> <input
-								type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
-
-							<button class="btn btn-lg btn-primary btn-block" type="submit">Log
-								In</button>
-							<h4 class="text-center">
-								<a href="${contextPath}/registration">Create an account</a>
-							</h4>
-						</div>
-					</form> --%>
-
-
-					<form method="POST" action="${contextPath}/login">
+					<form:form method="POST" action="/login" modelAttribute="userDto" class="form-signin">
 						<div class="form-group ${error != null ? 'has-error' : ''}">
 							<label>Email address</label> 
 							<span>${message}</span>
@@ -79,9 +57,6 @@
 						 <span>${error}</span>
 							<label>Password</label> <input name="password" type="password"
 								class="form-control" placeholder="Password">
-							<input
-								type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />	
 						</div>
 						<div class="checkbox">
 							<label> <input type="checkbox"> Remember Me
@@ -109,18 +84,16 @@
 								Don't have account ? <a href="${contextPath}/registration"> Sign Up Here</a>
 							</p>
 						</div>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</div>
 	</div>
 
-
 	<script src="/resources/vendors/jquery/dist/jquery.min.js"></script>
 	<script src="/resources/vendors/popper.js/dist/umd/popper.min.js"></script>
 	<script src="/resources/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/resources/assets/js/main.js"></script>
-
 
 </body>
 
