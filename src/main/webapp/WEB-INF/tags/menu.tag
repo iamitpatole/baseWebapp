@@ -12,7 +12,7 @@
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="/welcome"> <i class="menu-icon fa fa-dashboard"></i> Dashboard </a>
+                        <a href="/welcome" class="data_nav_link"> <i class="menu-icon fa fa-dashboard"></i> Dashboard </a>
                     </li>
                     <li class="active">
                         <a href="/users" class="data_nav_link"> <i class="menu-icon fa fa-dashboard"></i> Users </a>

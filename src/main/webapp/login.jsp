@@ -69,19 +69,17 @@
 					</form> --%>
 
 
-					<form method="POST" action="${contextPath}/login">
+					<form:form method="POST" modelAttribute="loginForm"
+						action="${contextPath}/login">
 						<div class="form-group ${error != null ? 'has-error' : ''}">
-							<label>Email address</label> 
-							<span>${message}</span>
-							<input  name="username" type="text" class="form-control" placeholder="Email">
+							<label>Email address</label> <span>${message}</span> <input
+								name="username" type="text" class="form-control"
+								placeholder="Email">
 						</div>
 						<div class="form-group">
-						 <span>${error}</span>
-							<label>Password</label> <input name="password" type="password"
-								class="form-control" placeholder="Password">
-							<input
-								type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />	
+							<span>${error}</span> <label>Password</label> <input
+								name="password" type="password" class="form-control"
+								placeholder="Password">
 						</div>
 						<div class="checkbox">
 							<label> <input type="checkbox"> Remember Me
@@ -106,21 +104,21 @@
 						</div>
 						<div class="register-link m-t-15 text-center">
 							<p>
-								Don't have account ? <a href="${contextPath}/registration"> Sign Up Here</a>
+								Don't have account ? <a href="${contextPath}/registration">
+									Sign Up Here</a>
 							</p>
 						</div>
-					</form>
+					</form:form>
+
 				</div>
 			</div>
 		</div>
 	</div>
 
-
 	<script src="/resources/vendors/jquery/dist/jquery.min.js"></script>
 	<script src="/resources/vendors/popper.js/dist/umd/popper.min.js"></script>
 	<script src="/resources/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/resources/assets/js/main.js"></script>
-
 
 </body>
 

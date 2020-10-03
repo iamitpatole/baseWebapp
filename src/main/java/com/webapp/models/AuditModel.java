@@ -1,6 +1,5 @@
 package com.webapp.models;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
         value = {"createdAt", "updatedAt"},
         allowGetters = true
 )
-public abstract class AuditModel implements Serializable {
+public abstract class AuditModel {
 	
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webapp.models.User;
 
 @RestController
+@RequestMapping("/api")
 public class UsersController {
 
-	@GetMapping("/users/all")
+	@GetMapping("/users/all") 
 	public List<User> fetchUsers() {
 
 		List<User> list = new ArrayList<>();
@@ -26,7 +28,6 @@ public class UsersController {
 		list.add(user1);
 
 		return list;
-
 	}
 
 }
